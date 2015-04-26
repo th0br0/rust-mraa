@@ -1,4 +1,4 @@
-# rust-mraa [![Build Status][trav-ci-img]][trav-ci]
+# rust-mraa [![Build Status](https://travis-ci.org/th0br0/rust-mraa.svg?branch=master)](https://travis-ci.org/th0br0/rust-mraa)
 
 Bindings for libmraa in Rust
 

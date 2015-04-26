@@ -6,6 +6,7 @@ description = "Rust bindings to Intel's IoT mraa library"
 license = "MIT"
 authors = ["Andreas C. Osowski <andreas.chr.osowski@gmail.com>"]
 keywords = ["iot", "intel", "edison", "galileo", "rpi"]
+build = "build.rs"
 
 [lib]
 name = "mraa"

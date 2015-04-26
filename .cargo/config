@@ -1,2 +1,0 @@
-[target.i686-unknown-linux-gnu]
-linker = "i586-poky-linux-gcc"

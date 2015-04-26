@@ -1,0 +1,27 @@
+language: rust
+
+rust:
+    - nightly
+
+env:
+    global:
+        - secure: kio+oQIy6os1yxTqrAqLav4QQ9CAzKMQfg+K8bREM2r/SkStPdFCY+ijQQsvsdtzxQ7F2WFWipvHR+/kyBH3moWUxvkk/Tp+LFz2IoxCnBZeLIlAHaOix57/r58LXwOR26eYrTO9j6od2AfdmgUSacGhnCPBrZCJibhMwVDDrps=
+        - LD_LIBRARY_PATH: $LD_LIBRARY_PATH:/tmp/install-prefix/lib64:/tmp/install-prefix/lib
+
+install:
+    - pushd .
+    - wget https://github.com/intel-iot-devkit/mraa/archive/v0.6.2.tar.gz -O /tmp/libmraa.tgz
+    - tar xvfz /tmp/libmraa.tgz -C /tmp
+    - mkdir /tmp/mraa-0.6.2/build
+    - cd /tmp/mraa-0.6.2/build && cmake .. -DCMAKE_INSTALL_PREFIX=/tmp/install-prefix && make && make install
+    - popd
+
+script:
+    - cargo build -v
+    - cargo test -v
+    - cargo doc -v
+
+after_success:
+    - cp -R target/doc doc
+    - '[ "$TRAVIS_RUST_VERSION" != "beta" ] || curl http://www.rust-ci.org/artifacts/put?t=$RUSTCI_TOKEN | sh'
+    - rm -r doc
