@@ -1,0 +1,11 @@
+[package]
+name = "mraa"
+version = "0.0.1"
+repository = "https://github.com/th0br0/rust-mraa.git"
+description = "Rust bindings to Intel's IoT mraa library"
+license = "MIT"
+authors = ["Andreas C. Osowski <andreas.chr.osowski@gmail.com>"]
+keywords = ["iot", "intel", "edison", "galileo", "rpi"]
+
+[lib]
+name = "mraa"
