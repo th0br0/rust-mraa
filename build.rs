@@ -1,17 +1,15 @@
 use std::env;
 
 fn build_i686() {
-    match env::var_os("qecore_sdk_version") {
-        Some(_) => println!("cargo:linker=i586-poky-linux-gcc"),
-        _ => {}
+    if env::var("OECORE_SDK_VERSION").is_ok() {
+        print!("cargo:linker=i586-poky-linux-gcc");
     }
 }
 
 fn main () {
 
-    match env::var("TRAVIS") {
-        Ok(_) => println!("cargo:rustc-link-search=/tmp/install-prefix/lib"),
-        _ => {}
+    if env::var("TRAVIS").is_ok() {
+        println!("cargo:rustc-link-search=/tmp/install-prefix/lib");
     }
 
     match env::var("TARGET") {
