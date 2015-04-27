@@ -24,54 +24,15 @@
 
 extern crate mraa;
 
-use std::thread::sleep_ms;
 use std::ffi::CStr;
-use std::{env, str};
-use std::ptr;
+use std::str;
 use mraa::bindings::common::*;
-use mraa::bindings::types::*;
-use mraa::bindings::gpio::*;
 
 pub fn main() {
-
-    let gpio = unsafe { match mraa_get_platform_type() {
-        MRAA_INTEL_GALILEO_GEN1 => mraa_gpio_init_raw(3),
-        MRAA_INTEL_MINNOWBOARD_MAX => mraa_gpio_init(21),
-        _ => mraa_gpio_init(13)
-    }};
-    let mut gpio_in : mraa_gpio_context = ptr::null_mut();
-
     let board_name = str::from_utf8(unsafe { CStr::from_ptr(mraa_get_platform_name()) }.to_bytes()).unwrap();
     let version = str::from_utf8(unsafe { CStr::from_ptr(mraa_get_version())}.to_bytes()).unwrap();
 
-    println!("Welcome to libmraa\n Version: {}\n Running on: {}", version, board_name);
+    println!("hello mraa\n Version: {}\n Running on: {}", version, board_name);
 
-    if gpio.is_null() {
-        panic!("Could not initialize gpio");
-    }
-
-    unsafe {
-        if MRAA_INTEL_MINNOWBOARD_MAX == mraa_get_platform_type() {
-            gpio_in = mraa_gpio_init(14);
-            if ! gpio_in.is_null() {
-                mraa_gpio_dir(gpio_in, MRAA_GPIO_IN);
-                println!("Press and hold S1 to stop, Press SW1 to shutdown!");
-            }
-        }
-
-        mraa_gpio_dir(gpio, MRAA_GPIO_OUT);
-    }
-
-    let mut ledstate = false;
-    loop {
-        if !(gpio_in.is_null()) && unsafe {mraa_gpio_read(gpio_in) != 0} {break;}
-
-        ledstate = unsafe { match ledstate {
-            true => {mraa_gpio_write(gpio, 0); false},
-            false => {mraa_gpio_write(gpio, 1); true}
-        }};
-        sleep_ms(1000);
-    }
-
-
+    unsafe { mraa_deinit() };
 }
